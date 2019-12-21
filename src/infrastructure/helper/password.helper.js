@@ -1,23 +1,18 @@
-import bcrypt from 'bcryptjs'
+import * as argon2 from 'argon2'
 
 class PasswordEncrypt {
-    constructor() {
 
+    async hashPassword(password) {
+
+        const hashedPassword = await argon2.hash(password)
+        return hashedPassword
     }
 
-    hashPassword(password) {
-        const salt = bcrypt.genSaltSync(10)
-        const hash = bcrypt.hashSync(password, salt)
+    async compare(inputPassword, hashedPassword){
 
-        return hash
-    }
+        const valid = await argon2.verify(hashedPassword, inputPassword)
 
-    compare(inputPassword, hashedPassword){
-        const compared = bcrypt.compare(inputPassword, hashedPassword).then(isMatch => {
-            return isMatch ? true : false
-        })
-        
-        return compared
+        return valid ? true : false
     }
 }
 

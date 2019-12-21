@@ -7,8 +7,8 @@ const userRoutes = Router()
 
 const controller = makeClassInvoker(UserController)
 
-userRoutes.get('/', authJwt, controller('listUsers'))
-userRoutes.get('/:id', authJwt, controller('showUser'))
+userRoutes.get('/', controller('listUsers'))
+userRoutes.get('/:id', controller('showUser'))
 userRoutes.post('/', controller('createUser'))
 userRoutes.put('/:id', authJwt, controller('updateUser'))
 

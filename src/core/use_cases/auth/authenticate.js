@@ -6,7 +6,7 @@ const authenticate = ({ validator, loginSchema, userRepository, passwordEncrypt,
         const validate = validator.validate(data, loginSchema)
         if (validate) return validate
 
-        const foundUser = await userRepository.findUserByWhere({ email: data.email })
+        const foundUser = await userRepository.findUserLogin({ email: data.email })
 
         if (foundUser) {
             const compare = await passwordEncrypt.compare(data.password, foundUser.password)
@@ -19,9 +19,9 @@ const authenticate = ({ validator, loginSchema, userRepository, passwordEncrypt,
 
                 const payload = {
                     id: foundUser.id,
-                    name: foundUser.name,
-                    btcId: foundUser.btcId,
-                    ethId: foundUser.ethId
+                    firstName: foundUser.firstName,
+                    lastName: foundUser.lastName,
+                    email: foundUser.email
                 }
 
                 const signJwt = await jwtManager.generate(payload)

@@ -2,6 +2,7 @@ class UserProvider {
     constructor({ database }) {
         this.db = database.sequelize
         this.model = this.db.model('User')
+        this.authModel = this.db.model('UserAuth')
     }
 
     async getAllUsers() {
@@ -67,9 +68,31 @@ class UserProvider {
 
         const user = await this.model.findOne({ where: query })
             .then(user => {
-                return user.get({ plain: true })
+                if (user) {
+                    return user.get({ plain: true })
+                } else {
+                    return null
+                }
+            })
+            .catch(error => {
+                console.log(error, 'find user by query error')
             })
 
+        return user
+    }
+
+    async findUserLogin(query) {
+
+        const user = await this.model.findOne({
+                where: query,
+                attributes: ['id', 'UserAuth.password', 'email', 'createdAt', 'updatedAt'],
+                include: [{
+                    model: this.authModel,
+                    required: true,
+                    attributes: []
+                }],
+                raw: true
+            })
         return user
     }
 }

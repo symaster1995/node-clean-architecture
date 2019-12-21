@@ -23,6 +23,10 @@ class UserRepository {
         return this.userProvider.findUserByWhere(query)
     }
 
+    findUserLogin(query) {
+        return this.userProvider.findUserLogin(query)
+    }
+
 }
 
 export default UserRepository

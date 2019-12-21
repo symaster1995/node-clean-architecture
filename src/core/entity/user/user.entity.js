@@ -17,8 +17,6 @@ const buildUserEntity = ({ validator, userSchema, passwordEncrypt }) => {
             user: Object.freeze({
                 getName: () => name,
                 getEmail: () => email,
-                getPassword: () => passwordEncrypt.hashPassword(password),
-                getMaxAmount: () => 1000,
                 getCreatedAt: () => createdAt,
                 getUpdatedAt: () => updatedAt
             })

@@ -6,5 +6,6 @@ const authRoutes = Router()
 
 const controller = makeClassInvoker(AuthController)
 authRoutes.post('/login', controller('login'))
+authRoutes.post('/hashTest', controller('hashTest'))
 
 export default authRoutes

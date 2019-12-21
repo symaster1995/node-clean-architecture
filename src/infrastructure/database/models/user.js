@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     User.associate = function(models) {
         User.hasOne(models.UserAuth, {
             foreignkey: 'user_id',
-            sourceKey: 'id'
+            sourceKey: 'id',
+            targetKey: 'user_id'
         })
     }
 
