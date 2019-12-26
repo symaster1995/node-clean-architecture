@@ -15,7 +15,7 @@ class AuthController {
 
             const serialized = this.userSerializer.serialize(user)
 
-            return this.response.setSuccess(res, 200, 'user created', { user: serialized, token })
+            return this.response.setSuccess(res, 200, 'user logged in', { user: serialized, token })
 
         } catch (error) {
             console.log(error)
