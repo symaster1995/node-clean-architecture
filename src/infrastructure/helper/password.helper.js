@@ -1,14 +1,18 @@
 import * as argon2 from 'argon2'
 
 class PasswordEncrypt {
+    
+    async hashPassword(inputPassword) {
 
-    async hashPassword(password) {
-
-        const hashedPassword = await argon2.hash(password)
-        return hashedPassword
+        try {
+            const hashedPassword = await argon2.hash(inputPassword)
+            return hashedPassword
+        } catch (error) {
+            console.log(error, 'hashing argon error')
+        }
     }
 
-    async compare(inputPassword, hashedPassword){
+    async compare(inputPassword, hashedPassword) {
 
         const valid = await argon2.verify(hashedPassword, inputPassword)
 

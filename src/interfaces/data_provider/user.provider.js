@@ -22,9 +22,8 @@ class UserProvider {
                     exclude: ['password']
                 },
                 defaults: {
-                    name: data.name,
-                    maxAmount: data.maxAmount,
-                    password: data.password,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
                     createdAt: data.createdAt,
                     updatedAt: data.updatedAt
                 }
@@ -35,9 +34,27 @@ class UserProvider {
                         error: 'Email already in use'
                     }
                 } else {
-                    return {
-                        user: user.get({ plain: true })
-                    }
+                    console.log(data.password)
+                    const authInsert = this.authModel.create(({
+                        user_id: created.id,
+                        password: data.password,
+                        alg: "argon2",
+                        createdAt: data.createdAt,
+                        updatedAt: data.updatedAt
+                    })).then(auth => {
+                        if (!auth) {
+                            return { error: 'password not saved' }
+                        }else {
+                            return {
+                                user: user.get({ plain: true })
+                            }
+                        }
+
+                    }).catch(error => {
+                        console.log(error, 'password error')
+                    })
+
+                    return authInsert
                 }
             })
             .catch(error => {
@@ -84,15 +101,15 @@ class UserProvider {
     async findUserLogin(query) {
 
         const user = await this.model.findOne({
-                where: query,
-                attributes: ['id', 'UserAuth.password', 'email', 'createdAt', 'updatedAt'],
-                include: [{
-                    model: this.authModel,
-                    required: true,
-                    attributes: []
-                }],
-                raw: true
-            })
+            where: query,
+            attributes: ['id', 'UserAuth.password', 'email', 'createdAt', 'updatedAt'],
+            include: [{
+                model: this.authModel,
+                required: true,
+                attributes: []
+            }],
+            raw: true
+        })
         return user
     }
 }

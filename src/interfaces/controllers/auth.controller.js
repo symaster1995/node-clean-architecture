@@ -1,10 +1,11 @@
 import * as argon2 from 'argon2'
 
 class AuthController {
-    constructor({ authenticate, response, userSerializer }) {
+    constructor({ authenticate, response, userSerializer, passwordEncrypt }) {
         this.authenticate = authenticate
         this.response = response
         this.userSerializer = userSerializer
+        this.passwordEncrypt = passwordEncrypt
     }
 
     async login(req, res) {
@@ -25,7 +26,9 @@ class AuthController {
     async hashTest(req, res) {
         try {
             
-            const hashedPassword = await argon2.hash(req.body.password)
+            const hashedPassword = await this.passwordEncrypt.hashPassword2(req.body.password) 
+            // const hashedPassword = await argon2.hash(req.body.password)
+            console.log(hashedPassword, 'wat')
 
             return this.response.setSuccess(res, 200, 'password hashed', { hashed: hashedPassword })
         } catch (error) {

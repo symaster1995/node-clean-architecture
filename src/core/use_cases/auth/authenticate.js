@@ -11,6 +11,8 @@ const authenticate = ({ validator, loginSchema, userRepository, passwordEncrypt,
         if (foundUser) {
             const compare = await passwordEncrypt.compare(data.password, foundUser.password)
 
+            console.log(compare, 'compare')
+
             if (!compare) {
                 return {
                     error: 'Wrong credential'

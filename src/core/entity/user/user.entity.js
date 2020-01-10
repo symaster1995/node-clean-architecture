@@ -1,22 +1,25 @@
-const buildUserEntity = ({ validator, userSchema, passwordEncrypt }) => {
+const buildUserEntity = ({ validator, userSchema }) => {
 
     const userEntity = ({
         id,
-        name,
+        firstName,
+        lastName,
         email,
         password,
         createdAt = Date.now(),
         updatedAt = Date.now()
     } = {}) => {
 
-        const validate = validator.validate({ name, email, password }, userSchema.create)
+        const validate = validator.validate({ firstName, lastName, email, password }, userSchema.create)
 
         if (validate) return validate
 
         return {
             user: Object.freeze({
-                getName: () => name,
+                getFirstName: () => firstName,
+                getLastName: () => lastName,
                 getEmail: () => email,
+                getPassword: () => password,
                 getCreatedAt: () => createdAt,
                 getUpdatedAt: () => updatedAt
             })

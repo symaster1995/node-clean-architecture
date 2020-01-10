@@ -7,9 +7,9 @@ const userRoutes = Router()
 
 const controller = makeClassInvoker(UserController)
 
-userRoutes.get('/', controller('listUsers'))
-userRoutes.get('/:id', controller('showUser'))
-userRoutes.post('/', controller('createUser'))
+userRoutes.get('/', authJwt, controller('listUsers'))
+userRoutes.get('/:id', authJwt, controller('showUser'))
+userRoutes.post('/', authJwt, controller('createUser'))
 userRoutes.put('/:id', authJwt, controller('updateUser'))
 
 export default userRoutes

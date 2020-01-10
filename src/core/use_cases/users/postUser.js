@@ -1,25 +1,28 @@
 'use strict'
 class PostUser {
-    constructor({ userRepository, userEntity }) {
+    constructor({ userRepository, userEntity, passwordEncrypt }) {
         this.userRepository = userRepository
         this.userEntity = userEntity
+        this.passwordEncrypt = passwordEncrypt
     }
 
-    post(data) {
-        
+    async post(data) {
+
         const { error, user } = this.userEntity(data)
         if (error) return { error }
 
+        const hashed = await this.passwordEncrypt.hashPassword(user.getPassword())
+
         let newUser = {
-            name: user.getName(),
-            password: user.getPassword(),
+            firstName: user.getFirstName(),
+            lastName: user.getLastName(),
+            password: hashed,
             email: user.getEmail(),
-            maxAmount: user.getMaxAmount(),
             createdAt: user.getCreatedAt(),
             updatedAt: user.getUpdatedAt()
         }
 
-        return this.userRepository.postUser(newUser)
+        return await this.userRepository.postUser(newUser)
     }
 }
 
