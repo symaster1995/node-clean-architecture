@@ -2,7 +2,7 @@ class UserProvider {
     constructor({ database }) {
         this.db = database.sequelize
         this.model = this.db.model('User')
-        this.authModel = this.db.model('UserAuth')
+        this.passwordModel = this.db.model('UserPassword')
     }
 
     async getAllUsers() {
@@ -34,9 +34,9 @@ class UserProvider {
                         error: 'Email already in use'
                     }
                 } else {
-                    console.log(data.password)
-                    const authInsert = this.authModel.create(({
-                        user_id: created.id,
+                    const createdUser = user.get({ plain: true })
+                    const authInsert = this.passwordModel.create(({
+                        userId: createdUser.id,
                         password: data.password,
                         alg: "argon2",
                         createdAt: data.createdAt,
@@ -44,9 +44,9 @@ class UserProvider {
                     })).then(auth => {
                         if (!auth) {
                             return { error: 'password not saved' }
-                        }else {
+                        } else {
                             return {
-                                user: user.get({ plain: true })
+                                user: createdUser
                             }
                         }
 
@@ -102,9 +102,9 @@ class UserProvider {
 
         const user = await this.model.findOne({
             where: query,
-            attributes: ['id', 'UserAuth.password', 'email', 'createdAt', 'updatedAt'],
+            attributes: ['id', 'UserPassword.password', 'email', 'createdAt', 'updatedAt'],
             include: [{
-                model: this.authModel,
+                model: this.passwordModel,
                 required: true,
                 attributes: []
             }],
