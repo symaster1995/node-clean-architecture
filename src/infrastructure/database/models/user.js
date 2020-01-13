@@ -7,10 +7,10 @@ module.exports = (sequelize, DataTypes) => {
     }, {})
 
     User.associate = function(models) {
-        User.hasOne(models.UserAuth, {
-            foreignkey: 'user_id',
+        User.hasOne(models.UserPassword, {
+            foreignkey: 'userId',
             sourceKey: 'id',
-            targetKey: 'user_id'
+            targetKey: 'userId'
         })
     }
 

@@ -17,8 +17,8 @@ module.exports = {
         const user = await queryInterface.sequelize.query(`SELECT id from Users order by id desc limit 1;`)
         const userRow = user[0]
 
-        return await queryInterface.bulkInsert('User_Auths', [{
-            user_id: userRow[0].id,
+        return await queryInterface.bulkInsert('UserPasswords', [{
+            userId: userRow[0].id,
             password: hashedPassword,
             alg: 'argon2',
             createdAt: new Date(),
