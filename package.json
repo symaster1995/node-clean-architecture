@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "directories": {
+      "test": "test"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --require @babel/register --recursive || true",
+    "test:unit": "mocha --require @babel/register --opts test/mocha.opts.unit || true",
     "dev": "NODE_ENV=development nodemon --exec babel-node index.js",
     "standard": "standard",
     "standard-fix": "standard --fix"
